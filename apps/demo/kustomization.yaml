@@ -8,8 +8,8 @@ resources:
 
 images:
   - name: pulseline/flow-api
-    newTag: 0.5.0
+    newTag: 0.5.1
   - name: pulseline/flow-processor
-    newTag: 0.5.0
+    newTag: 0.5.1
   - name: pulseline/dashboard
-    newTag: 0.5.0
+    newTag: 0.5.1
