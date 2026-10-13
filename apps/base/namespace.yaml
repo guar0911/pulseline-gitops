@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pulseline
+  annotations:
+    # The namespace also holds the Strimzi operator and the Secret, which are
+    # not in Git. Deleting the Argo CD Application must not take them along.
+    argocd.argoproj.io/sync-options: Delete=false

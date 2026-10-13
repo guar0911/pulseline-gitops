@@ -1,0 +1,31 @@
+# Topics are declared here, so no application creates them at startup.
+# Three partitions let flow-processor scale to three replicas.
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaTopic
+metadata:
+  name: production.scan.received.v1
+  labels:
+    strimzi.io/cluster: pulseline
+spec:
+  partitions: 3
+  replicas: 1
+---
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaTopic
+metadata:
+  name: production.bottleneck.detected.v1
+  labels:
+    strimzi.io/cluster: pulseline
+spec:
+  partitions: 3
+  replicas: 1
+---
+apiVersion: kafka.strimzi.io/v1
+kind: KafkaTopic
+metadata:
+  name: production.daily-metrics.generated.v1
+  labels:
+    strimzi.io/cluster: pulseline
+spec:
+  partitions: 1
+  replicas: 1

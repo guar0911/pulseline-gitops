@@ -1,0 +1,33 @@
+# PulseLine on Kubernetes. Not applied directly: use an overlay (../dev, ../demo),
+# which chooses the image versions.
+#
+# Expects in the cluster:
+#   - the Strimzi operator watching the namespace
+#   - a Secret "pulseline-secrets" with POSTGRES_USER and POSTGRES_PASSWORD
+# Neither is in Git. The setup script of the pulseline repository creates both.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: pulseline
+
+resources:
+  - namespace.yaml
+  - postgres/postgres.yaml
+  - kafka/kafka.yaml
+  - kafka/topics.yaml
+  - migrate/job.yaml
+  - flow-api/flow-api.yaml
+  - flow-processor/flow-processor.yaml
+  - flow-processor/hpa.yaml
+  - dashboard/dashboard.yaml
+
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: pulseline
+
+# The generated name ends in a hash of the content, so changing a value rolls
+# out the Deployments that use it.
+configMapGenerator:
+  - name: pulseline-config
+    envs:
+      - config/config.env

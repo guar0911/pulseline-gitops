@@ -1,0 +1,4 @@
+.DS_Store
+# Credentials never belong here.
+*.env
+!apps/base/config/config.env

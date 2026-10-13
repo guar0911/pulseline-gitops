@@ -1,0 +1,20 @@
+# For working on the manifests without Argo CD: whatever was built last, and a
+# single API replica.
+#   kubectl apply -k apps/dev
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../base
+
+images:
+  - name: pulseline/flow-api
+    newTag: dev
+  - name: pulseline/flow-processor
+    newTag: dev
+  - name: pulseline/dashboard
+    newTag: dev
+
+replicas:
+  - name: flow-api
+    count: 1

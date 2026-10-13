@@ -1,0 +1,15 @@
+# The demo environment, which Argo CD keeps in sync with the cluster.
+# A release is a commit that changes a tag below.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../base
+
+images:
+  - name: pulseline/flow-api
+    newTag: 0.5.0
+  - name: pulseline/flow-processor
+    newTag: 0.5.0
+  - name: pulseline/dashboard
+    newTag: 0.5.0

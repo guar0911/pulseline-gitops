@@ -1,0 +1,30 @@
+# Tells Argo CD to keep the namespace "pulseline" equal to apps/demo on main.
+#   kubectl apply -f argocd/pulseline-application.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pulseline
+  namespace: argocd
+  finalizers:
+    # Deleting the Application also deletes what it deployed.
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/guar0911/pulseline-gitops.git
+    targetRevision: main
+    path: apps/demo
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: pulseline
+  syncPolicy:
+    automated:
+      # Remove what is no longer in Git, and undo manual changes in the cluster.
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m

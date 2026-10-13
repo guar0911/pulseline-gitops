@@ -1,0 +1,24 @@
+# Scales the consumers with CPU use. The ceiling is three because the scan
+# topic has three partitions: a fourth replica would have nothing to read.
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: flow-processor
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: flow-processor
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
+  behavior:
+    scaleDown:
+      # Scale in after two calm minutes instead of the default five, so the demo is short.
+      stabilizationWindowSeconds: 120
